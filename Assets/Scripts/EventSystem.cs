@@ -47,8 +47,8 @@ public class EventSystem : MonoBehaviour {
             wait = true;
             StartCoroutine(Timer());
         }
-
-        if(Elevator.ElevatorRun == false && Elevator.reached == true)
+/*
+        if(Elevator.ElevatorRun == false)
         {
             if (upq.Count != 0)
             {
@@ -65,7 +65,7 @@ public class EventSystem : MonoBehaviour {
                 Elevator.reached = false;
             }
         }
-
+*/
         if (Elevator.reached = true && Elevator.ElevatorRun == true)
         {
             if (dir_up == true)
@@ -105,39 +105,58 @@ public class EventSystem : MonoBehaviour {
         while (source == Display.currentFloor)
             source = rnd.Next(1, 5);
 
-        if (source == 1)
-            upq.Enqueue(source);
-        else if (source == 5)
-            downq.Enqueue(source);
-        else
+        if (Elevator.ElevatorRun == true)
         {
-            int dir = rnd.Next(1, 2);
-            if (dir == 1)
+            if (source == 1)
                 upq.Enqueue(source);
-            else
+            else if (source == 5)
                 downq.Enqueue(source);
+            else
+            {
+                int dir = rnd.Next(1, 2);
+                if (dir == 1)
+                    upq.Enqueue(source);
+                else
+                    downq.Enqueue(source);
+            }
+        }
+        else if(Elevator.reached == false)
+        {
+            Elevator.destination = loc[source];
+            Elevator.ElevatorRun = true;
+            Elevator.reached = false;
+
+            if (source > Display.currentFloor)
+                dir_up = true;
+            else
+                dir_up = false;
         }
 
         wait = false;
-        Debug.Log(upq.Peek());
-        Debug.Log(Elevator.ElevatorRun);
-        Debug.Log(Elevator.reached);
-        Debug.Log(loc[(int)upq.Dequeue()]);
-        Debug.Log(Elevator.destination);
-        Debug.Log(dir_up);
+        //Debug.Log(upq.Peek());
+        Debug.Log("Run" + Elevator.ElevatorRun);
+        Debug.Log("Reached" + Elevator.reached);
+        //        Debug.Log(loc[(int)upq.Dequeue()]);
+        Debug.Log("Start" + Elevator.start);
+        Debug.Log("Destination" + Elevator.destination);
 
     }
 
     void SortQueues()
     {
-        var a = upq.ToArray().ToList();
-        var b = downq.ToArray().ToList();
+        if( upq.Count != 0 )
+        {
+            var a = upq.ToArray().ToList();
+            a.Sort();
+            upq = new Queue(a);
+        }
 
-        a.Sort();
-        b.Sort();
-        b.Reverse();
-
-        upq = new Queue(a);
-        downq = new Queue(b);
+        if (downq.Count != 0)
+        {
+            var b = downq.ToArray().ToList();
+            b.Sort();
+            b.Reverse();
+            downq = new Queue(b);
+        }
     }
 }

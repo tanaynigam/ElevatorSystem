@@ -21,6 +21,7 @@ public class Elevator : MonoBehaviour {
     new Vector3 source;
     new float accelerateDist;
 
+
     [SerializeField]
     Transform elevator;
 
@@ -37,10 +38,10 @@ public class Elevator : MonoBehaviour {
 
         if (ElevatorRun == true)
         {
-            if (Door.DoorOpen == false)
-            {
+//            if (Door.DoorOpen == false)
+ //           {
                 start = true;
-            }
+//            }
         }
 
         ElevatorAccelerate();
@@ -70,30 +71,43 @@ public class Elevator : MonoBehaviour {
 
         elevator.position = Vector3.MoveTowards(elevator.position, destination, speed * acc * Time.deltaTime);
 
-        if (Vector3.Distance(elevator.position, destination) < 0.1)
+        if (Vector3.Distance(elevator.position, destination) == 0)
         {
             
             if(EventSystem.source_check[Display.currentFloor] == true)
             {
-                if(EventSystem.dir_up == true)
+                System.Random rnd = new System.Random();
+                int temp = rnd.Next(Display.currentFloor, 5);
+                while (temp == Display.currentFloor)
+                    temp = rnd.Next(1, 5);
+
+                if (temp > Display.currentFloor)
                 {
-                    System.Random rnd = new System.Random();
-                    int temp = rnd.Next(Display.currentFloor, 5);
                     EventSystem.upq.Enqueue(temp);
                 }
                 else
                 {
-                    System.Random rnd = new System.Random();
-                    int temp = rnd.Next(1, Display.currentFloor);
                     EventSystem.downq.Enqueue(temp);
                 }
             }
 
-            reached = true;
-            Door.OpenDoor();
+            if(reached == false)
+            {
+
+                reached = true;
+                start = false;
+ //               Door.DoorComplete = true;
+//                StartCoroutine(Countdown());
+            }
+            ///StartCoroutine(Countdown());
+
         }
     }
 
+    IEnumerator Countdown()
+    {
+        yield return new WaitForSeconds(5f);
+        Door.CloseDoor();
+    }
 
-    
 }
