@@ -5,7 +5,7 @@ using UnityEngine;
 public class Door : MonoBehaviour {
 
     public static bool DoorOpen = false;
-    public static bool DoorComplete;
+    public static bool DoorComplete = true;
     //static new Vector3 Open = new Vector3(-4.5f, 1.25f, 0.25f);
     //static new Vector3 Close = new Vector3(0, 1.25f, 0.25f);
     public static Transform door;

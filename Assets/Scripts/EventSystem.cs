@@ -18,7 +18,7 @@ public class EventSystem : MonoBehaviour {
     bool wait = false;
 
     public static bool[] source_check = new bool[6];
-	// Use this for initialization
+	//Initialization
 	void Start () {
 
         upq = new Queue();
@@ -38,10 +38,13 @@ public class EventSystem : MonoBehaviour {
 
     }
 	
-	// Update is called once per frame
 	void Update () {
 
+
+        //Sort Queues to read directional destinations in Ascending/Descending order 
         SortQueues();
+
+
         if (wait == false)
         {
             wait = true;
@@ -66,10 +69,13 @@ public class EventSystem : MonoBehaviour {
             }
         }
 */
+
+        //Check if Elevator has reached
         if (Elevator.reached = true && Elevator.ElevatorRun == true)
         {
             if (dir_up == true)
             {
+                //If Going up, check for next destination or source in that direction
                 if (upq.Count != 0)
                 {
                     Elevator.destination = loc[(int)upq.Dequeue()];
@@ -81,6 +87,7 @@ public class EventSystem : MonoBehaviour {
 
             else if(dir_up == false)
             {
+                //If going down, check for next destination or source in that direction
                 if (downq.Count != 0)
                 {
                     Elevator.destination = loc[(int)downq.Dequeue()];
@@ -91,11 +98,13 @@ public class EventSystem : MonoBehaviour {
             }
         }
 
+        //If no Source/destination exists in any direction, Halt the Elevator
         if (upq.Count == 0 && downq.Count == 0 && Elevator.reached == true)
             Elevator.ElevatorRun = false;
 		
 	}
 
+    //At every 10seconds, add a source
     IEnumerator Timer()
     {
         yield return new WaitForSeconds(10f);
@@ -105,6 +114,7 @@ public class EventSystem : MonoBehaviour {
         while (source == Display.currentFloor)
             source = rnd.Next(1, 5);
 
+        //Add source to call an Elevator. Add to the specific Direction Queue
         if (Elevator.ElevatorRun == true)
         {
             if (source == 1)

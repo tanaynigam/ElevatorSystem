@@ -25,31 +25,32 @@ public class Elevator : MonoBehaviour {
     [SerializeField]
     Transform elevator;
 
-
-    // Use this for initialization
+    
     void Start () {
 //        destination = floor3;
 //        ElevatorRun = true;
 //        start = true;
 	}
 	
-	// Update is called once per frame
 	void Update () {
 
+        //Check if Door is open. Run only when it is closed
         if (ElevatorRun == true)
         {
-//            if (Door.DoorOpen == false)
- //           {
+            if (Door.DoorOpen == false)
+            {
                 start = true;
-//            }
+            }
         }
 
+        //Accelerate/Decelerate Lift
         ElevatorAccelerate();
     }
 
 
     public void ElevatorAccelerate()
     {
+        //Elevator Acceleration
         if (start == true)
         {
             if (speed < 1)
@@ -61,6 +62,7 @@ public class Elevator : MonoBehaviour {
                 start = false;
         }
 
+        //Elevator Deceleration
         if (start == false)
         {
             if (Vector3.Distance(elevator.position, destination) < accelerateDist && speed > 0.1)
@@ -71,16 +73,21 @@ public class Elevator : MonoBehaviour {
 
         elevator.position = Vector3.MoveTowards(elevator.position, destination, speed * acc * Time.deltaTime);
 
+        //Check Whether Elevator has reached the destination
         if (Vector3.Distance(elevator.position, destination) == 0)
         {
             
+            //Check whether Elevator is at Source.
             if(EventSystem.source_check[Display.currentFloor] == true)
             {
+
+                //Input Destination if Lift is at Source
                 System.Random rnd = new System.Random();
                 int temp = rnd.Next(Display.currentFloor, 5);
                 while (temp == Display.currentFloor)
                     temp = rnd.Next(1, 5);
 
+                //Queue the destination floor in the up or down direction.
                 if (temp > Display.currentFloor)
                 {
                     EventSystem.upq.Enqueue(temp);
@@ -91,11 +98,13 @@ public class Elevator : MonoBehaviour {
                 }
             }
 
+            //Change States and Open and Close Door
             if(reached == false)
             {
 
                 reached = true;
                 start = false;
+                Door.DoorComplete = true;
  //               Door.DoorComplete = true;
 //                StartCoroutine(Countdown());
             }
