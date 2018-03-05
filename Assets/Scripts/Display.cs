@@ -6,14 +6,14 @@ public class Display : MonoBehaviour {
     Transform elevator;
     TextMesh text;
     public static int currentFloor;
-
-    // Use this for initialization
+    
     void Start () {
         elevator = GameObject.Find("Elevator").GetComponent<Transform>();
         text = GameObject.Find("Number").GetComponent<TextMesh>();
     }
 	
-	// Update is called once per frame
+
+    //Display Floor
 	void Update () {
 		if(elevator.position.y > (Elevator.floor1.y - 1) && elevator.position.y < (Elevator.floor2.y - 1))
         {

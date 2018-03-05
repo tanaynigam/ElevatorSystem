@@ -26,6 +26,7 @@ public class Door : MonoBehaviour {
         
     }
 
+    //Open Door
     public static void OpenDoor()
     {
   //          Debug.Log("231");
@@ -38,6 +39,7 @@ public class Door : MonoBehaviour {
             }
     }
 
+    //Close Door
     public static void CloseDoor()
     {
 //            Debug.Log("123"); 

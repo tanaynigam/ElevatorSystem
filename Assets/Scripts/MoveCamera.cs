@@ -3,31 +3,28 @@ using System.Collections;
 
 public class MoveCamera : MonoBehaviour
 {
-    //
-    // VARIABLES
-    //
+   
 
-    public float turnSpeed = 4.0f;      // Speed of camera turning when mouse moves in along an axis
-    public float panSpeed = 4.0f;       // Speed of the camera when being panned
-    public float zoomSpeed = 4.0f;      // Speed of the camera going back and forth
+    public float turnSpeed = 4.0f;   
+    public float panSpeed = 4.0f;       
+    public float zoomSpeed = 4.0f;     
 
-    private Vector3 mouseOrigin;    // Position of cursor when mouse dragging starts
-    private bool isPanning;     // Is the camera being panned?
-    private bool isRotating;    // Is the camera being rotated?
-    private bool isZooming;     // Is the camera zooming?
+    private Vector3 mouseOrigin;    
+    private bool isPanning;     
+    private bool isRotating;    
+    private bool isZooming;     
     float xAxisValue;
     float zAxisValue;
 
-    //
-    // UPDATE
-    //
 
     void Update()
     {
 
+        //Get the Arrows keys
         xAxisValue = Input.GetAxis("Horizontal");
         zAxisValue = Input.GetAxis("Vertical");
 
+        //Move the Camera on it's X-Z plane 
         if (Camera.current != null)
         {
             Camera.current.transform.Translate(new Vector3(xAxisValue, 0.0f, zAxisValue));
